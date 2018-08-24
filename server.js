@@ -150,9 +150,8 @@ app.put('/api/characters/:id', (req,res) =>{
 
 
 
-app.delete('/api/characters/:id', (req, response)=>{
+app.delete('/api/characters/:id', (req, res)=>{
   let charId = req.params.id;
-  db.Character.
   db.Character.deleteOne( {_id: charId}, (err, deletedChar)=>{
     if(err){console.log(err);}
 

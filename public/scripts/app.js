@@ -16,17 +16,26 @@ $(document).ready(function(){
 
   render = char => {
 
-    console.log(char._id)
-    console.log(char.bestMoves)
+    // console.log(char._id)
+    // console.log(char.bestMoves)
     let charHtml = `
-    <ul style="margin-top: 20px;"> ${char.name}
+    <ul style="margin-top: 25px;"> ${char.name}
     <li>Playstyle: ${char.playstyle}</li>
     <li>Best Moves: ${char.bestMove}</li>
     <li>Combos: ${char.combo}</li>
     </ul>
-    <button id="update" style="margin-left: 25px">Update</button>
-    <button id="delete">Delete</button>
+    <button class="deleteChar" data-id="${char._id}">
+    DELETE
+    </button>
       `
+      // <a style="margin-left:35px;" href="javascript:void(0)" data-toggle="collapse" data-target="#update-${char._id}">
+      // UPDATE
+      // </a>
+      //  <a href="javascript:void(0)"  data-id="#delete-${char._id}">
+      //   DELETE</span>
+      // </a>
+
+
     $charList.append(charHtml);
   };
 
@@ -78,15 +87,33 @@ $(document).ready(function(){
   //   }
   // });
 
+  $('#charList').on('click', '.deleteChar',event => {
 
-  // $.ajax({
-  //   method: "DELETE",
-  //   url: baseUrl,
-  //   success: json => {
-  //     allChars = json.data
-  //     renderAll()
-  //   }
-  // });
+    event.preventDefault();
+
+    var charId = $(event.currentTarget).attr('data-id');
+    console.log("ID: "+charId);
+
+    var charToDelete = allChars.find( char => char._id == charId );
+    console.log("Char to delete: "+charToDelete.name);
+
+  // // DELETE request to delete todo
+    $.ajax({
+      type: 'DELETE',
+      url:  '/api/characters/' + charId,
+      success: json => {
+        console.log(allChars.indexOf(charToDelete));
+        allChars.splice(allChars.indexOf(charToDelete), 1);
+        renderAll();
+      }
+    });
+
+  });
+
+
+
+
+
 
 
 });
